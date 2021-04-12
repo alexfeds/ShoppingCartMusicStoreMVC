@@ -1,0 +1,21 @@
+﻿@model ShoppingCartMusicStore.Models.Genre
+
+@{
+    ViewBag.Title = "Browse";
+}
+
+<h2>Browse</h2>
+
+<h2>Browsing Genre: @Model.Name</h2>
+<ul>
+    @foreach (var album in Model.Albums)
+    {
+        <li>
+            @album.Title
+        </li>
+    }
+</ul>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
