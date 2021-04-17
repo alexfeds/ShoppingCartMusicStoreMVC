@@ -13,14 +13,14 @@ namespace Mvc3ToolsUpdateWeb_Default.Controllers
     public class AccountController : Controller
     {
 
-        //private void MigrateShoppingCart(string UserName)
-        //{
-        //    // Associate shopping cart items with logged-in user
-        //    var cart = ShoppingCart.GetCart(this.HttpContext);
+        private void MigrateShoppingCart(string UserName)
+        {
+            // Associate shopping cart items with logged-in user
+            var cart = ShoppingCart.GetCart(this.HttpContext);
 
-        //    cart.MigrateCart(UserName);
-        //    Session[ShoppingCart.CartSessionKey] = UserName;
-        //}
+            cart.MigrateCart(UserName);
+            Session[ShoppingCart.CartSessionKey] = UserName;
+        }
 
         ////
         //// GET: /Account/LogOn
@@ -32,7 +32,6 @@ namespace Mvc3ToolsUpdateWeb_Default.Controllers
 
         //
         // POST: /Account/LogOn
-
         [HttpPost]
         public ActionResult LogOn(LogOnModel model, string returnUrl)
         {
@@ -40,11 +39,14 @@ namespace Mvc3ToolsUpdateWeb_Default.Controllers
             {
                 if (Membership.ValidateUser(model.UserName, model.Password))
                 {
-                    //MigrateShoppingCart(model.UserName); 
-                    
-                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-                    if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
-                        && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                    MigrateShoppingCart(model.UserName);
+
+                    FormsAuthentication.SetAuthCookie(model.UserName,
+                        model.RememberMe);
+                    if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1
+                        && returnUrl.StartsWith("/")
+                        && !returnUrl.StartsWith("//") &&
+                        !returnUrl.StartsWith("/\\"))
                     {
                         return Redirect(returnUrl);
                     }
@@ -58,7 +60,6 @@ namespace Mvc3ToolsUpdateWeb_Default.Controllers
                     ModelState.AddModelError("", "The user name or password provided is incorrect.");
                 }
             }
-
             // If we got this far, something failed, redisplay form
             return View(model);
         }
@@ -83,7 +84,6 @@ namespace Mvc3ToolsUpdateWeb_Default.Controllers
 
         //
         // POST: /Account/Register
-
         [HttpPost]
         public ActionResult Register(RegisterModel model)
         {
@@ -91,13 +91,16 @@ namespace Mvc3ToolsUpdateWeb_Default.Controllers
             {
                 // Attempt to register the user
                 MembershipCreateStatus createStatus;
-                Membership.CreateUser(model.UserName, model.Password, model.Email, "question", "answer", true, null, out createStatus);
+                Membership.CreateUser(model.UserName, model.Password, model.Email,
+                       "question", "answer", true, null, out
+                       createStatus);
 
                 if (createStatus == MembershipCreateStatus.Success)
                 {
-                    //MigrateShoppingCart(model.UserName); 
-                    
-                    FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
+                    MigrateShoppingCart(model.UserName);
+
+                    FormsAuthentication.SetAuthCookie(model.UserName, false /*
+                  createPersistentCookie */);
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -105,11 +108,10 @@ namespace Mvc3ToolsUpdateWeb_Default.Controllers
                     ModelState.AddModelError("", ErrorCodeToString(createStatus));
                 }
             }
-
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-
+#
         //
         // GET: /Account/ChangePassword
 

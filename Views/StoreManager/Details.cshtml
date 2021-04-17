@@ -51,6 +51,10 @@
         </dd>
 
     </dl>
+    <p class="button">
+        @Html.ActionLink("Add tocart", "AddToCart",
+        "ShoppingCart", new { id = Model.AlbumId }, "")
+    </p>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.AlbumId }) |
