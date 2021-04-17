@@ -26,7 +26,9 @@ namespace ShoppingCartMusicStore.Models
         [DisplayName("Album Art URL")]
         [StringLength(1024)]
         public string AlbumArtUrl { get; set; }
+
         public virtual Genre Genre { get; set; }
         public virtual Artist Artist { get; set; }
+        public virtual List<OrderDetail> OrderDetails { get; set; }
     }
 }
